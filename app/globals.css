@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* Design tokens from ui-mockup.html, exposed as Tailwind theme values. */
+@theme {
+  --font-sans: var(--font-jost), system-ui, sans-serif;
+
+  --color-blue: #2f5bea;
+  --color-blue-deep: #2449c9;
+  --color-blue-soft: #8fa8f5;
+  --color-blue-mist: #c9d6fb;
+  --color-blue-tint: #eef2fd;
+  --color-canvas: #f5f7fc;
+  --color-surface: #ffffff;
+  --color-ink: #16181d;
+  --color-ink-2: #5b6170;
+  --color-ink-3: #a3a9b6;
+  --color-line: #e6e9f0;
+  --color-green: #3dd45c;
+  --color-green-tint: #e6f9ea;
+  --color-amber: #f2a93b;
+  --color-amber-tint: #fff4e2;
+  --color-amber-ink: #9a5b00;
+
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+
+  --shadow-card: 0 18px 40px -18px rgba(36, 73, 201, 0.55);
+  --shadow-soft: 0 6px 20px -10px rgba(22, 24, 29, 0.18);
+
+  --animate-bar: bar 0.9s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+
+  @keyframes bar {
+    0%, 100% { height: 4px; }
+    50% { height: 18px; }
+  }
+  @keyframes shimmer {
+    0% { opacity: 0.55; }
+    50% { opacity: 1; }
+    100% { opacity: 0.55; }
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Hide scrollbars on the soft panels, like the mockup. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
