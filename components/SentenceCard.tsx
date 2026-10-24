@@ -1,15 +1,79 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
 import { languageName } from "@/lib/languages";
-import type { SentenceResponse } from "@/lib/schemas";
+import type { SentenceResponse, WordVisual } from "@/lib/schemas";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { WordDeck, type DeckWord } from "./WordDeck";
 
 const LANG_TAG: Record<string, string> = { eng: "en", spa: "es", fra: "fr", deu: "de", ita: "it", por: "pt", jpn: "ja", kor: "ko", cmn: "zh" };
 
-/** A whole sentence on the blue card, with key words to open as word cards. */
-export function SentenceCard({ data, onWord }: { data: SentenceResponse; onWord: (sourceWord: string) => void }) {
+// Pictures per sentence, so flipping back to a sentence doesn't refetch.
+const visualsCache = new Map<string, Promise<WordVisual[] | null>>();
+function fetchVisuals(words: string[]): Promise<WordVisual[] | null> {
+  const key = words.join("|").toLowerCase();
+  let p = visualsCache.get(key);
+  if (!p) {
+    p = fetch("/api/visuals", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ words }) })
+      .then((r) => (r.ok ? (r.json() as Promise<WordVisual[]>) : null))
+      .catch(() => null);
+    visualsCache.set(key, p);
+  }
+  return p;
+}
+
+/** Underline the deck's current word where it appears in the sentence. */
+function Highlighted({ text, word }: { text: string; word: string | null }) {
+  const i = word ? text.toLowerCase().indexOf(word.toLowerCase()) : -1;
+  if (!word || i === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <motion.span
+        key={word}
+        initial={{ backgroundColor: "rgba(255,255,255,0.35)" }}
+        animate={{ backgroundColor: "rgba(255,255,255,0)" }}
+        transition={{ duration: 0.8 }}
+        className="rounded-md underline decoration-white/70 decoration-[3px] underline-offset-[6px]"
+      >
+        {text.slice(i, i + word.length)}
+      </motion.span>
+      {text.slice(i + word.length)}
+    </>
+  );
+}
+
+/** A whole sentence on the blue card, with an animated deck of its key words below. */
+export function SentenceCard({ data }: { data: SentenceResponse }) {
   const reduce = useReducedMotion();
+  const words = data.key_words;
+  const [visuals, setVisuals] = useState<WordVisual[] | null>(null);
+  const [loading, setLoading] = useState(words.length > 0);
+  const [current, setCurrent] = useState(0);
+  const onIndexChange = useCallback((i: number) => setCurrent(i), []);
+
+  useEffect(() => {
+    if (!words.length) return;
+    let alive = true;
+    fetchVisuals(words.map((k) => k.english)).then((v) => {
+      if (!alive) return;
+      setVisuals(v);
+      setLoading(false);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [words]);
+
+  const deck: DeckWord[] = words.map((k, i) => ({
+    target: k.target,
+    romanization: k.romanization ?? null,
+    english: k.english,
+    visual: visuals?.[i]?.visual ?? null,
+    emoji: visuals?.[i]?.emoji ?? null,
+  }));
+
   return (
     <div>
       <div className="relative mx-1 mt-7">
@@ -19,21 +83,21 @@ export function SentenceCard({ data, onWord }: { data: SentenceResponse; onWord:
           initial={reduce ? false : { rotate: -3, scale: 0.9, y: 18, opacity: 0.3 }}
           animate={{ rotate: -3, scale: 1, y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 320, damping: 15, mass: 0.9 }}
-          className="relative flex min-h-[300px] flex-col rounded-xl bg-blue px-5 pb-5 pt-4 text-white shadow-card"
+          className="relative flex min-h-[220px] flex-col rounded-xl bg-blue px-5 pb-5 pt-4 text-white shadow-card"
           aria-label={`Sentence in ${languageName(data.target_lang)}: ${data.translation}`}
         >
           <span className="text-sm opacity-85">
             {languageName(data.source.lang)} · <b className="font-semibold">{data.source.text}</b>
           </span>
-          <div className="flex flex-1 flex-col justify-center py-5 text-center">
+          <div className="flex flex-1 flex-col justify-center py-4 text-center">
             <motion.p
               lang={LANG_TAG[data.target_lang]}
               initial={reduce ? false : { y: 8, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="break-words text-[clamp(24px,7vw,32px)] font-bold leading-[1.2]"
+              className="break-words text-[clamp(24px,7vw,32px)] font-bold leading-[1.3]"
             >
-              {data.translation}
+              <Highlighted text={data.translation} word={words[current]?.target ?? null} />
             </motion.p>
             {data.romanization && <p className="mt-2 text-base italic opacity-85">{data.romanization}</p>}
           </div>
@@ -47,28 +111,7 @@ export function SentenceCard({ data, onWord }: { data: SentenceResponse; onWord:
         </div>
       )}
 
-      {data.key_words.length > 0 && (
-        <section className="mt-4">
-          <small className="mx-1 mb-1.5 block text-[13px] text-ink-2">Key words: tap one to see it in motion</small>
-          <div className="flex flex-wrap gap-2">
-            {data.key_words.map((k, i) => (
-              <motion.button
-                key={`${k.source}-${i}`}
-                type="button"
-                onClick={() => onWord(k.source)}
-                initial={reduce ? false : { opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.06 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex flex-col items-start rounded-[14px] bg-surface px-3.5 py-2 text-left shadow-soft"
-              >
-                <span lang={LANG_TAG[data.target_lang]} className="text-[17px] font-semibold text-blue">{k.target}</span>
-                <span className="text-[13px] text-ink-2">{k.english}</span>
-              </motion.button>
-            ))}
-          </div>
-        </section>
-      )}
+      <WordDeck words={deck} loading={loading} lang={LANG_TAG[data.target_lang]} onIndexChange={onIndexChange} />
     </div>
   );
 }

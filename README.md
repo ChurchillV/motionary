@@ -2,7 +2,7 @@
 
 Learn words through comprehensible input: type a word, pick two languages, and get the translation with a playful looping GIF, spoken audio and a simple example sentence.
 
-Type a full sentence and Motionary switches to **sentence mode**: one direct translation (one model call, cached), with its key words as chips that open their own animated word cards.
+Type a full sentence and Motionary switches to **sentence mode**: one direct translation (one model call, cached), with an animated deck of its key words below (swipe or tap through; each card shows the word's GIF, translation and meaning).
 
 Translation goes through a language-independent concept (`wave` → `WAVE` → `saludar`), so it works in any direction and the GIF stays the same. The full spec is in [AGENT_BUILD_INSTRUCTIONS.md](AGENT_BUILD_INSTRUCTIONS.md); the visual design follows [ui-mockup.html](ui-mockup.html).
 

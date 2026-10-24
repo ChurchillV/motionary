@@ -95,7 +95,6 @@ export function TranslateApp() {
   const [result, setResult] = useState<LookupResponse | null>(null);
   const [sentence, setSentence] = useState<SentenceResponse | null>(null);
   const [mode, setMode] = useState<"word" | "sentence">("word");
-  const [fromSentence, setFromSentence] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [alternatives, setAlternatives] = useState<Alternative[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -149,7 +148,7 @@ export function TranslateApp() {
   const show = useCallback(
     async (
       word: string,
-      opts: { conceptId?: string; pickedFrom?: { primary: Alternative; alts: Alternative[] }; pairOverride?: Pair; fromSentence?: boolean } = {},
+      opts: { conceptId?: string; pickedFrom?: { primary: Alternative; alts: Alternative[] }; pairOverride?: Pair } = {},
     ) => {
       const p = opts.pairOverride ?? pair;
       const clean = word.trim();
@@ -162,9 +161,8 @@ export function TranslateApp() {
       setView("output");
       setStatus("loading");
       setError(null);
-      setFromSentence(!!opts.fromSentence);
 
-      if (!opts.conceptId && !opts.fromSentence && isSentence(clean, getLanguage(p.from)?.ime)) {
+      if (!opts.conceptId && isSentence(clean, getLanguage(p.from)?.ime)) {
         const sres = await fetchSentence(clean, p);
         if (id !== requestId.current) return;
         if (!sres.ok) {
@@ -427,18 +425,10 @@ export function TranslateApp() {
                 </motion.div>
               ) : mode === "sentence" && sentence ? (
                 <motion.div key={`sentence-${sentence.source.text}-${sentence.target_lang}`}>
-                  <SentenceCard
-                    data={sentence}
-                    onWord={(w) => void show(w, { fromSentence: true, pairOverride: { from: sentence.source.lang, to: sentence.target_lang } })}
-                  />
+                  <SentenceCard data={sentence} />
                 </motion.div>
               ) : result ? (
                 <motion.div key={`card-${result.concept_id}-${result.target_lang}`}>
-                  {fromSentence && sentence && (
-                    <button type="button" onClick={() => setMode("sentence")} className="mx-1 text-sm font-semibold text-blue">
-                      ← Back to the sentence
-                    </button>
-                  )}
                   <WordCard data={result} slow={slow} autoPlayKey={autoPlayKey} />
 
                   <div className="mx-1 mt-4 flex flex-wrap items-center gap-2">

@@ -119,9 +119,9 @@ Rules:
 2. translation: the ${to.name} sentence${to.script === "Latn" ? "" : " in native script"}. Keep the meaning, tense and tone.
 3. ${romanRule}
 4. english: what the sentence means in English${from.code === "eng" ? " (repeat the input, corrected if needed)" : ""}.
-5. key_words: 2 to 5 of the most useful content words (nouns, verbs, adjectives; skip articles and particles). For each: "source" is the word as it appears in the ${from.name} sentence, in dictionary form; "target" is the ${to.name} dictionary form${to.script === "Latn" ? "" : ` written in ${to.name} script, never romanized`}; "english" is a one or two word meaning.
+5. key_words: 2 to 5 of the most useful content words (nouns, verbs, adjectives; skip articles and particles). For each: "source" is the word as it appears in the ${from.name} sentence, in dictionary form; "target" is the ${to.name} dictionary form${to.script === "Latn" ? "" : ` written in ${to.name} script, never romanized`}; ${to.romanization ? `"romanization" is the target written in ${to.romanization}; ` : `"romanization" is null; `}"english" is a one or two word English meaning in dictionary form (e.g. "drink", "apple").
 6. confidence: "high", "medium" or "low".
 
 JSON shape:
-{"translation": "...", "romanization": ${to.romanization ? '"..."' : "null"}, "english": "...", "key_words": [{"source": "...", "target": "...", "english": "..."}], "confidence": "high"}`;
+{"translation": "...", "romanization": ${to.romanization ? '"..."' : "null"}, "english": "...", "key_words": [{"source": "...", "target": "...", "romanization": ${to.romanization ? '"..."' : "null"}, "english": "..."}], "confidence": "high"}`;
 }

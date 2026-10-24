@@ -38,7 +38,14 @@ export const SentenceResult = z.object({
   romanization: z.string().nullable(),
   english: z.string(),
   key_words: z
-    .array(z.object({ source: z.string().min(1), target: z.string().min(1), english: z.string() }))
+    .array(
+      z.object({
+        source: z.string().min(1),
+        target: z.string().min(1),
+        romanization: z.string().nullable().optional(),
+        english: z.string(),
+      }),
+    )
     .max(5),
   confidence: ConfidenceSchema,
 });
@@ -49,6 +56,10 @@ export const SentenceRequest = z
   .refine((r) => r.source_lang !== r.target_lang, { message: "source_lang and target_lang must differ" });
 
 export type SentenceResponse = SentenceResult & { source: { lang: string; text: string }; target_lang: string };
+
+/** Pictures for the sentence word deck (no translation calls). */
+export const VisualsRequest = z.object({ words: z.array(z.string().min(1).max(40)).min(1).max(5) });
+export type WordVisual = { english: string; visual: Visual | null; emoji: string | null };
 
 /** Batch enrichment (script 02). */
 export const EnrichResult = z.object({
