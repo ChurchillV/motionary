@@ -12,6 +12,7 @@ import { CharacterPalette } from "./CharacterPalette";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { Arrow, Back, Cards, Info, Star } from "./Icons";
 import { LanguagePicker } from "./LanguagePicker";
+import { Logo } from "./Logo";
 import { PracticeMode, type PracticeItem } from "./PracticeMode";
 import { RatingRow, type Rating } from "./RatingRow";
 import { EmptyWordCard, WordCard, WordCardSkeleton } from "./WordCard";
@@ -200,7 +201,10 @@ export function TranslateApp() {
         <section className={`${view === "output" ? "hidden lg:flex" : "flex"} min-h-dvh flex-col lg:min-h-0`} aria-label="Translate">
           <header className="grid grid-cols-[40px_1fr_40px] items-center px-[18px] pb-3 pt-4">
             <span />
-            <h1 className="text-center text-xl font-semibold">Translate</h1>
+            <h1 className="flex justify-center">
+              <Logo />
+              <span className="sr-only"> · Translate</span>
+            </h1>
             <AboutBubble />
           </header>
 

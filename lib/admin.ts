@@ -6,7 +6,7 @@ export const ADMIN_COOKIE = "admin_token";
 
 /** Cookie value derived from the password, so the password itself is never stored. */
 export function adminToken(password: string): string {
-  return createHash("sha256").update(`giflingo-admin:${password}`).digest("hex");
+  return createHash("sha256").update(`motionary-admin:${password}`).digest("hex");
 }
 
 export function passwordMatches(input: string): boolean {

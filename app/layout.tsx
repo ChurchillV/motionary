@@ -10,7 +10,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "GifLingo · learn words from GIFs",
+  title: "Motionary · words in motion",
   description:
     "Translate a word and understand it from a playful looping GIF, spoken audio and a simple example sentence.",
 };

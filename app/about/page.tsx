@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LogoMark } from "@/components/Logo";
 
-export const metadata: Metadata = { title: "About · GifLingo" };
+export const metadata: Metadata = { title: "About · Motionary" };
 
 export default function About() {
   return (
     <main className="mx-auto max-w-[560px] px-4 py-8">
       <Link href="/" className="text-sm font-semibold text-blue">← Back to translating</Link>
-      <h1 className="mt-4 text-3xl font-semibold">About GifLingo</h1>
+      <h1 className="mt-4 flex items-center gap-3 text-3xl font-semibold">
+        <LogoMark size={44} /> About Motionary
+      </h1>
       <p className="mt-3 leading-relaxed text-ink-2">
-        GifLingo teaches words through comprehensible input: every word comes with a playful looping GIF, spoken audio and a
+        Motionary teaches words through comprehensible input: every word comes with a playful looping GIF, spoken audio and a
         simple example sentence, so you understand it from the picture and the sound rather than from a dictionary
         definition.
       </p>

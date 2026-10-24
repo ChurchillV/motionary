@@ -1,4 +1,4 @@
-# GifLingo
+# Motionary
 
 Learn words through comprehensible input: type a word, pick two languages, and get the translation with a playful looping GIF, spoken audio and a simple example sentence.
 
