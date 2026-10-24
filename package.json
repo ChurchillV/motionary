@@ -1,0 +1,44 @@
+{
+  "name": "giflingo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "seed": "tsx scripts/01-seed-concepts.ts",
+    "enrich": "tsx scripts/02-enrich-concepts.ts",
+    "giphy": "tsx scripts/03-search-giphy.ts",
+    "screen": "tsx scripts/04-screen-candidates.ts",
+    "noto": "tsx scripts/05-noto-fallback.ts",
+    "lexicon": "tsx scripts/06-import-lexicon.ts",
+    "embed": "tsx scripts/07-embed-concepts.ts",
+    "audio": "tsx scripts/08-pregenerate-audio.ts",
+    "smoke": "tsx scripts/smoke.ts"
+  },
+  "dependencies": {
+    "@google/genai": "2.31.0",
+    "@supabase/supabase-js": "2.118.0",
+    "framer-motion": "14.6.0",
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^17",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "^4",
+    "tsx": "4.23.15",
+    "typescript": "^5",
+    "vitest": "5.0.5"
+  }
+}
