@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Card UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Design tokens ---------- */
+  :root {
+    --blue: #2F5BEA;
+    --blue-deep: #2449C9;
+    --blue-soft: #8FA8F5;
+    --blue-mist: #C9D6FB;
+    --blue-tint: #EEF2FD;
+    --canvas: #F5F7FC;
+    --surface: #FFFFFF;
+    --ink: #16181D;
+    --ink-2: #5B6170;
+    --ink-3: #A3A9B6;
+    --line: #E6E9F0;
+    --green: #3DD45C;
+    --green-tint: #E6F9EA;
+    --amber: #F2A93B;
+    --amber-tint: #FFF4E2;
+    --radius-xl: 28px;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --shadow-card: 0 18px 40px -18px rgba(36, 73, 201, .55);
+    --shadow-soft: 0 6px 20px -10px rgba(22, 24, 29, .18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Jost', system-ui, sans-serif;
+    color: var(--ink);
+    background: #FFFFFF;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; }
+  input { font: inherit; }
+
+  /* ---------- Page layout ---------- */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 16px 64px;
+  }
+  .page-head { text-align: center; margin-bottom: 32px; }
+  .page-head h1 { font-size: 26px; font-weight: 600; }
+  .page-head p { color: var(--ink-2); margin-top: 6px; }
+  .screens {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 48px;
+  }
+  .screen-label {
+    text-align: center;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-bottom: 14px;
+    letter-spacing: .02em;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone {
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    height: 760px;
+    border: 10px solid #111;
+    border-radius: 54px;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,.35);
+  }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 150px; height: 30px; background: #111;
+    border-radius: 0 0 20px 20px; z-index: 5;
+  }
+  .status {
+    height: 44px; display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 26px 0; font-weight: 600; font-size: 15px;
+  }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+  .home-bar {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 5px; border-radius: 3px; background: #111;
+  }
+  .screen {
+    height: calc(100% - 44px);
+    display: flex; flex-direction: column;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: grid; grid-template-columns: 40px 1fr 40px; align-items: center;
+    padding: 10px 18px 12px;
+  }
+  .topbar h2 { text-align: center; font-size: 20px; font-weight: 600; }
+  .icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #8FA8F5, #2F5BEA);
+    color: #fff; font-weight: 600; display: grid; place-items: center; font-size: 14px;
+  }
+
+  /* ---------- Body panel (soft canvas like the reference) ---------- */
+  .panel {
+    flex: 1;
+    background: var(--canvas);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    margin: 0 10px;
+    padding: 18px 16px 28px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .panel::-webkit-scrollbar { display: none; }
+
+  .meta-row {
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--ink-2); font-size: 14px; padding: 0 6px;
+  }
+  .meta-row span { display: inline-flex; align-items: center; gap: 6px; }
+  .progress {
+    height: 5px; background: var(--line); border-radius: 3px; margin: 10px 6px 18px;
+    overflow: hidden;
+  }
+  .progress > i { display: block; height: 100%; width: 38%; background: var(--green); border-radius: 3px; }
+
+  /* ---------- Input screen ---------- */
+  .lang-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--shadow-soft);
+  }
+  .lang-pick {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 8px 10px; border-radius: var(--radius-md); background: var(--blue-tint);
+    text-align: left;
+  }
+  .lang-pick small { font-size: 12px; color: var(--ink-2); }
+  .lang-pick strong { font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .swap {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--blue); color: #fff; display: grid; place-items: center;
+    transition: transform .35s ease;
+  }
+  .swap.spin { transform: rotate(180deg); }
+
+  .input-card {
+    margin-top: 16px;
+    background: var(--blue);
+    border-radius: var(--radius-xl);
+    padding: 18px;
+    color: #fff;
+    box-shadow: var(--shadow-card);
+    position: relative;
+  }
+  .input-card label { font-size: 14px; opacity: .85; }
+  .input-card input {
+    width: 100%; margin-top: 6px;
+    background: transparent; border: 0; outline: 0;
+    color: #fff; font-size: 30px; font-weight: 700;
+    caret-color: #fff;
+  }
+  .input-card input::placeholder { color: rgba(255,255,255,.5); }
+  .palette { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+  .palette button {
+    min-width: 34px; height: 34px; padding: 0 8px;
+    border-radius: 10px; background: rgba(255,255,255,.18);
+    color: #fff; font-weight: 600;
+  }
+  .palette button:active { background: rgba(255,255,255,.32); }
+  .input-mic {
+    position: absolute; top: 14px; right: 14px;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,.2); display: grid; place-items: center;
+  }
+
+  .section-title { font-size: 15px; font-weight: 600; margin: 20px 4px 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 8px 14px; border-radius: 999px; background: var(--surface);
+    box-shadow: var(--shadow-soft); font-size: 15px; display: inline-flex; gap: 6px; align-items: center;
+  }
+  .chip:active { transform: scale(.97); }
+
+  .recent { display: flex; flex-direction: column; gap: 8px; }
+  .recent-item {
+    background: var(--surface); border-radius: var(--radius-md); padding: 10px 12px;
+    display: grid; grid-template-columns: 36px 1fr auto; gap: 10px; align-items: center;
+  }
+  .recent-item .em { font-size: 24px; text-align: center; }
+  .recent-item b { font-weight: 600; }
+  .recent-item small { color: var(--ink-2); display: block; font-size: 13px; }
+  .recent-item .play-mini {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--blue-tint); color: var(--blue);
+    display: grid; place-items: center;
+  }
+
+  .cta {
+    margin-top: 22px; width: 100%; height: 56px; border-radius: 18px;
+    background: var(--ink); color: #fff; font-size: 17px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .cta:active { transform: translateY(1px); }
+
+  /* ---------- Output screen ---------- */
+  .pair-pill {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 14px; color: var(--ink-2); margin-bottom: 14px;
+  }
+  .pair-pill b { color: var(--ink); font-weight: 600; }
+
+  .stack { position: relative; height: 380px; margin: 28px 4px 0; }
+  .stack .ghost, .stack .card {
+    position: absolute; inset: 0; border-radius: var(--radius-xl);
+  }
+  .stack .ghost.g1 { background: var(--blue-mist); transform: translate(10px, -14px) rotate(4deg); }
+  .stack .ghost.g2 { background: var(--blue-soft); transform: translate(5px, -7px) rotate(2deg); }
+  .card {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: var(--shadow-card);
+    transform: rotate(-3deg);
+    padding: 16px 16px 18px;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.pop { animation: pop .5s cubic-bezier(.2,.8,.2,1); }
+  @keyframes pop {
+    0% { transform: rotate(-3deg) scale(.92) translateY(14px); opacity: .4; }
+    100% { transform: rotate(-3deg) scale(1) translateY(0); opacity: 1; }
+  }
+  .card-top { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+  .source-word { font-size: 14px; opacity: .85; }
+  .source-word b { font-weight: 600; }
+  .sound {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,.22); display: grid; place-items: center; color: #fff;
+  }
+  .sound.playing { background: #fff; color: var(--blue); }
+  .gif-slot {
+    width: 100%; aspect-ratio: 16 / 10; margin-top: 10px;
+    background: rgba(255,255,255,.95); border-radius: 18px;
+    display: grid; place-items: center; overflow: hidden; position: relative;
+  }
+  .gif-slot img { width: 58%; height: 86%; object-fit: contain; }
+  .gif-slot .fallback { font-size: 84px; display: none; }
+  .gif-slot.no-img img { display: none; }
+  .gif-slot.no-img .fallback { display: block; }
+  .giphy-tag {
+    position: absolute; bottom: 6px; right: 8px; font-size: 10px; color: var(--ink-3);
+    letter-spacing: .02em;
+  }
+  .target-word { margin-top: 14px; font-size: 38px; font-weight: 700; line-height: 1; display: flex; align-items: flex-start; gap: 6px; }
+  .target-word sup { font-size: 13px; font-weight: 400; font-style: italic; opacity: .8; margin-top: 4px; }
+  .ipa { margin-top: 6px; font-size: 18px; opacity: .8; letter-spacing: .03em; }
+  .gloss { margin-top: auto; font-size: 15px; font-weight: 500; opacity: .95; }
+
+  .wave { display: none; gap: 3px; align-items: center; height: 18px; margin-top: 8px; }
+  .wave.on { display: flex; }
+  .wave i { width: 3px; background: #fff; border-radius: 2px; animation: bar 0.9s ease-in-out infinite; }
+  .wave i:nth-child(2) { animation-delay: .1s; } .wave i:nth-child(3) { animation-delay: .2s; }
+  .wave i:nth-child(4) { animation-delay: .3s; } .wave i:nth-child(5) { animation-delay: .4s; }
+  @keyframes bar { 0%,100% { height: 4px; } 50% { height: 18px; } }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px; margin: 16px 4px 0;
+    padding: 6px 10px; border-radius: 999px; font-size: 12.5px;
+    background: var(--amber-tint); color: #9A5B00;
+  }
+
+  .use-card {
+    margin-top: 14px; background: var(--surface); border-radius: var(--radius-lg);
+    padding: 14px 16px; box-shadow: var(--shadow-soft);
+  }
+  .use-head { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .use-head span { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+  .use-body { margin-top: 8px; display: grid; grid-template-columns: 1fr 34px; gap: 8px; align-items: start; }
+  .use-body p { font-style: italic; color: var(--ink-2); line-height: 1.4; }
+  .use-body p .hl { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+  .use-body small { display: block; margin-top: 4px; font-style: normal; color: var(--ink-3); font-size: 13px; }
+  .use-card.closed .use-body { display: none; }
+  .use-card.closed .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s; }
+
+  .alts { margin-top: 12px; }
+  .alts small { color: var(--ink-2); margin: 0 4px 6px; display: block; font-size: 13px; }
+
+  .rating { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; text-align: center; }
+  .rate { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--ink-3); font-size: 13px; }
+  .rate .face {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--surface);
+    display: grid; place-items: center; font-size: 30px; border: 3px solid transparent;
+    transition: border-color .2s, transform .2s;
+  }
+  .rate.on { color: var(--green); font-weight: 600; }
+  .rate.on .face { border-color: var(--green); transform: scale(1.05); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-head">
+    <h1>Word card UI: input and output</h1>
+    <p>Translating languages through comprehensible input, in a more fun and expressive way. Sample Spanish data; tap the chips, swap, play and rating buttons.</p>
+  </header>
+
+  <div class="screens">
+    <!-- ================= INPUT SCREEN ================= -->
+    <section>
+      <div class="screen-label">Input</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="status">
+          <span>9:41</span>
+          <span class="status-icons" aria-hidden="true">
+            <svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#111"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#111"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#111"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#111"/></svg>
+            <svg width="24" height="11" viewBox="0 0 24 11"><rect x=".5" y=".5" width="20" height="10" rx="3" fill="none" stroke="#111"/><rect x="2" y="2" width="16" height="7" rx="2" fill="#111"/><rect x="21.5" y="3.5" width="2" height="4" rx="1" fill="#111"/></svg>
+          </span>
+        </div>
+        <div class="screen">
+          <div class="topbar">
+            <span></span>
+            <h2>Translate</h2>
+            <div class="avatar" aria-label="Profile">VC</div>
+          </div>
+
+          <div class="panel">
+            <div class="meta-row">
+              <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+                Level 4
+              </span>
+              <span>12 words today</span>
+            </div>
+            <div class="progress"><i></i></div>
+
+            <div class="lang-card">
+              <button class="lang-pick" id="fromBtn" aria-label="Translate from">
+                <small>From</small>
+                <strong><span id="fromLang">English</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></strong>
+              </button>
+              <button class="swap" id="swapBtn" aria-label="Swap languages">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 20l4-4-4-4"/><path d="M21 16H7"/></svg>
+              </button>
+              <button class="lang-pick" id="toBtn" aria-label="Translate to">
+                <small>To</small>
+                <strong><span id="toLang">Spanish</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></strong>
+              </button>
+            </div>
+
+            <div class="input-card">
+              <label for="wordInput">Type a word</label>
+              <input id="wordInput" type="text" placeholder="water" autocomplete="off" maxlength="40">
+              <button class="input-mic" aria-label="Speak a word">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0"/><path d="M12 18v3"/></svg>
+              </button>
+              <div class="palette" id="palette" aria-label="Special characters">
+                <button>á</button><button>é</button><button>í</button><button>ó</button><button>ú</button><button>ñ</button><button>¿</button><button>¡</button>
+              </div>
+            </div>
+
+            <div class="section-title">Try one</div>
+            <div class="chips">
+              <button class="chip" data-word="water">💧 water</button>
+              <button class="chip" data-word="dog">🐕 dog</button>
+              <button class="chip" data-word="eat">😋 eat</button>
+              <button class="chip" data-word="house">🏠 house</button>
+              <button class="chip" data-word="sun">☀️ sun</button>
+            </div>
+
+            <button class="cta" id="showBtn">
+              Show me
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+            </button>
+
+            <div class="section-title">Recent</div>
+            <div class="recent">
+              <div class="recent-item">
+                <span class="em">🏠</span>
+                <div><b>casa</b><small>house</small></div>
+                <button class="play-mini" aria-label="Play casa">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="recent-item">
+                <span class="em">☀️</span>
+                <div><b>sol</b><small>sun</small></div>
+                <button class="play-mini" aria-label="Play sol">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-bar"></div>
+      </div>
+    </section>
+
+    <!-- ================= OUTPUT SCREEN ================= -->
+    <section>
+      <div class="screen-label">Output</div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="status">
+          <span>9:41</span>
+          <span class="status-icons" aria-hidden="true">
+            <svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#111"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#111"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#111"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#111"/></svg>
+            <svg width="24" height="11" viewBox="0 0 24 11"><rect x=".5" y=".5" width="20" height="10" rx="3" fill="none" stroke="#111"/><rect x="2" y="2" width="16" height="7" rx="2" fill="#111"/><rect x="21.5" y="3.5" width="2" height="4" rx="1" fill="#111"/></svg>
+          </span>
+        </div>
+        <div class="screen">
+          <div class="topbar">
+            <button class="icon-btn" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <h2>Your word</h2>
+            <div class="avatar" aria-label="Profile">VC</div>
+          </div>
+
+          <div class="panel">
+            <div class="pair-pill"><b id="outFrom">English</b>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+              <b id="outTo">Spanish</b></div>
+
+            <div class="stack">
+              <div class="ghost g1"></div>
+              <div class="ghost g2"></div>
+              <div class="card" id="card">
+                <div class="card-top">
+                  <span class="source-word">English · <b id="srcWord">water</b></span>
+                  <button class="sound" id="wordSound" aria-label="Play pronunciation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 5.5a9 9 0 010 13"/></svg>
+                  </button>
+                </div>
+                <div class="gif-slot" id="gifSlot">
+                  <img id="gifImg" alt="water" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a7/512.webp">
+                  <span class="fallback" id="gifFallback" aria-hidden="true">💧</span>
+                  <span class="giphy-tag">Powered by GIPHY</span>
+                </div>
+                <div class="target-word"><span id="tgtWord">agua</span><sup id="pos">f</sup></div>
+                <div class="ipa" id="ipa">ˈa.ɣwa</div>
+                <div class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="gloss" id="gloss">water</div>
+              </div>
+            </div>
+
+            <div class="badge" id="badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+              Synthetic voice
+            </div>
+
+            <div class="use-card" id="useCard">
+              <button class="use-head" id="useToggle" aria-expanded="true">
+                <span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg>
+                  Word in use
+                </span>
+                <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 15l6-6 6 6"/></svg>
+              </button>
+              <div class="use-body">
+                <p id="example">Bebo <span class="hl">agua</span> fría.<small id="exampleEn">I drink cold water.</small></p>
+                <button class="play-mini" id="sentenceSound" aria-label="Play sentence" style="width:34px;height:34px;border-radius:50%;background:var(--blue-tint);color:var(--blue);display:grid;place-items:center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="alts">
+              <small>Did you mean</small>
+              <div class="chips">
+                <button class="chip">🌊 sea</button>
+                <button class="chip">🥤 to drink</button>
+              </div>
+            </div>
+
+            <div class="rating" role="radiogroup" aria-label="How well did you know it?">
+              <button class="rate" role="radio" aria-checked="false"><span class="face">😞</span>Hard</button>
+              <button class="rate" role="radio" aria-checked="false"><span class="face">🙂</span>Medium</button>
+              <button class="rate on" role="radio" aria-checked="true"><span class="face">😆</span>Easy</button>
+            </div>
+          </div>
+        </div>
+        <div class="home-bar"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // Sample data for the mockup only. Real data comes from POST /api/lookup.
+  const SAMPLE = {
+    water: { tgt: 'agua',  pos: 'f', ipa: 'ˈa.ɣwa', gloss: 'water', emoji: '💧', cp: '1f4a7',
+             ex: ['Bebo ', 'agua', ' fría.'], exEn: 'I drink cold water.' },
+    dog:   { tgt: 'perro', pos: 'm', ipa: 'ˈpe.ro', gloss: 'dog', emoji: '🐕', cp: '1f415',
+             ex: ['El ', 'perro', ' duerme.'], exEn: 'The dog sleeps.' },
+    eat:   { tgt: 'comer', pos: 'v', ipa: 'koˈmeɾ', gloss: 'to eat', emoji: '😋', cp: '1f60b',
+             ex: ['Me gusta ', 'comer', ' pan.'], exEn: 'I like to eat bread.' },
+    house: { tgt: 'casa',  pos: 'f', ipa: 'ˈka.sa', gloss: 'house', emoji: '🏠', cp: '1f3e0',
+             ex: ['Mi ', 'casa', ' es grande.'], exEn: 'My house is big.' },
+    sun:   { tgt: 'sol',   pos: 'm', ipa: 'sol',    gloss: 'sun', emoji: '☀️', cp: '2600_fe0f',
+             ex: ['El ', 'sol', ' brilla.'], exEn: 'The sun shines.' }
+  };
+
+  const $ = id => document.getElementById(id);
+  const input = $('wordInput');
+
+  // Chips fill the input
+  document.querySelectorAll('[data-word]').forEach(b =>
+    b.addEventListener('click', () => { input.value = b.dataset.word; input.focus(); }));
+
+  // Character palette inserts at the cursor
+  $('palette').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    const s = input.selectionStart ?? input.value.length, e = input.selectionEnd ?? s;
+    input.value = input.value.slice(0, s) + b.textContent + input.value.slice(e);
+    input.focus(); input.setSelectionRange(s + b.textContent.length, s + b.textContent.length);
+  }));
+
+  // Swap languages
+  $('swapBtn').addEventListener('click', () => {
+    const f = $('fromLang').textContent, t = $('toLang').textContent;
+    $('fromLang').textContent = t; $('toLang').textContent = f;
+    $('swapBtn').classList.toggle('spin');
+  });
+
+  // GIF fallback to static emoji if the image fails
+  $('gifImg').addEventListener('error', () => $('gifSlot').classList.add('no-img'));
+  $('gifImg').addEventListener('load', () => $('gifSlot').classList.remove('no-img'));
+  if ($('gifImg').complete && $('gifImg').naturalWidth === 0) $('gifSlot').classList.add('no-img');
+
+  // Render the output card
+  function render(word) {
+    const d = SAMPLE[word] || SAMPLE.water;
+    const key = SAMPLE[word] ? word : 'water';
+    $('srcWord').textContent = key;
+    $('tgtWord').textContent = d.tgt;
+    $('pos').textContent = d.pos;
+    $('ipa').textContent = d.ipa;
+    $('gloss').textContent = d.gloss;
+    $('gifImg').alt = d.gloss;
+    $('gifFallback').textContent = d.emoji;
+    $('gifImg').src = `https://fonts.gstatic.com/s/e/notoemoji/latest/${d.cp}/512.webp`;
+    const [a, b, c] = d.ex;
+    $('example').innerHTML = `${a}<span class="hl">${b}</span>${c}<small>${d.exEn}</small>`;
+    $('outFrom').textContent = $('fromLang').textContent;
+    $('outTo').textContent = $('toLang').textContent;
+    const card = $('card'); card.classList.remove('pop'); void card.offsetWidth; card.classList.add('pop');
+  }
+  $('showBtn').addEventListener('click', () => render(input.value.trim().toLowerCase()));
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') render(input.value.trim().toLowerCase()); });
+
+  // Audio buttons: visual feedback only in the mockup
+  function fakePlay(btn) {
+    btn.classList.add('playing'); $('wave').classList.add('on');
+    setTimeout(() => { btn.classList.remove('playing'); $('wave').classList.remove('on'); }, 1400);
+  }
+  $('wordSound').addEventListener('click', e => fakePlay(e.currentTarget));
+  $('sentenceSound').addEventListener('click', e => fakePlay(e.currentTarget));
+
+  // Collapsible "Word in use"
+  $('useToggle').addEventListener('click', () => {
+    const c = $('useCard'); c.classList.toggle('closed');
+    $('useToggle').setAttribute('aria-expanded', !c.classList.contains('closed'));
+  });
+
+  // Rating
+  document.querySelectorAll('.rate').forEach(r => r.addEventListener('click', () => {
+    document.querySelectorAll('.rate').forEach(x => { x.classList.remove('on'); x.setAttribute('aria-checked', 'false'); });
+    r.classList.add('on'); r.setAttribute('aria-checked', 'true');
+  }));
+</script>
+</body>
+</html>
