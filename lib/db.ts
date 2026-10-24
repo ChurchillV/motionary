@@ -52,7 +52,8 @@ export type TranslationRow = {
   verified?: boolean;
 };
 export type LexiconRow = { lang_code: string; english: string; form: string; form_normalized: string; notes: string | null };
-export type InputCacheRow = { lang_code: string; text_normalized: string; concept_id: string; candidates: unknown };
+/** concept_id is null for cached sentence translations (text_normalized starts with "s>"). */
+export type InputCacheRow = { lang_code: string; text_normalized: string; concept_id: string | null; candidates: unknown };
 export type AudioClipRow = {
   concept_id: string;
   lang_code: string;

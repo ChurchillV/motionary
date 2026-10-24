@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 export const MAX_INPUT_CHARS = 40;
+export const MAX_SENTENCE_CHARS = 120;
 
 export type Confidence = "low" | "medium" | "high";
 

@@ -32,6 +32,24 @@ export const RenderResult = z.object({
 });
 export type RenderResult = z.infer<typeof RenderResult>;
 
+/** Sentence mode: one direct translation plus a few key words to explore. */
+export const SentenceResult = z.object({
+  translation: z.string().min(1),
+  romanization: z.string().nullable(),
+  english: z.string(),
+  key_words: z
+    .array(z.object({ source: z.string().min(1), target: z.string().min(1), english: z.string() }))
+    .max(5),
+  confidence: ConfidenceSchema,
+});
+export type SentenceResult = z.infer<typeof SentenceResult>;
+
+export const SentenceRequest = z
+  .object({ text: z.string(), source_lang: z.string(), target_lang: z.string() })
+  .refine((r) => r.source_lang !== r.target_lang, { message: "source_lang and target_lang must differ" });
+
+export type SentenceResponse = SentenceResult & { source: { lang: string; text: string }; target_lang: string };
+
 /** Batch enrichment (script 02). */
 export const EnrichResult = z.object({
   concepts: z.array(

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { load, save } from "@/lib/client/storage";
 import { getLanguage, languageName } from "@/lib/languages";
-import type { LookupResponse } from "@/lib/schemas";
+import type { LookupResponse, SentenceResponse } from "@/lib/schemas";
 import { AlternativeChips, type Alternative } from "./AlternativeChips";
 import { AudioButton } from "./AudioButton";
 import { CharacterPalette } from "./CharacterPalette";
@@ -17,6 +17,8 @@ import { PracticeMode, type PracticeItem } from "./PracticeMode";
 import { RatingRow, type Rating } from "./RatingRow";
 import { EmptyWordCard, WordCard, WordCardSkeleton } from "./WordCard";
 import { WordInUse } from "./WordInUse";
+import { SentenceCard } from "./SentenceCard";
+import { isSentence } from "@/lib/sentence-detect";
 
 type Pair = { from: string; to: string };
 type HistoryItem = PracticeItem & { key: string; text: string; from: string; to: string; rating: Rating | null; ts: number };
@@ -50,6 +52,29 @@ function fetchLookup(text: string, pair: Pair, conceptId?: string): Promise<Resu
   return p;
 }
 
+const sentenceCache = new Map<string, Promise<{ ok: true; data: SentenceResponse } | { ok: false; error: string }>>();
+function fetchSentence(text: string, pair: Pair) {
+  const key = `${pair.from}|${pair.to}|${text.trim().toLowerCase()}`;
+  const hit = sentenceCache.get(key);
+  if (hit) return hit;
+  const p = fetch("/api/sentence", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, source_lang: pair.from, target_lang: pair.to }),
+  })
+    .then(async (r) => {
+      const body = await r.json().catch(() => ({}));
+      return r.ok ? ({ ok: true, data: body } as const) : ({ ok: false, error: body.error ?? "Something went wrong." } as const);
+    })
+    .catch(() => ({ ok: false, error: "You seem to be offline. Check your connection." }) as const)
+    .then((res) => {
+      if (!res.ok) sentenceCache.delete(key);
+      return res;
+    });
+  sentenceCache.set(key, p);
+  return p;
+}
+
 function preloadVisual(data: LookupResponse) {
   for (const v of data.visuals) {
     if (v.webp) new Image().src = v.webp;
@@ -68,6 +93,9 @@ export function TranslateApp() {
   const [view, setView] = useState<"input" | "output">("input");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [result, setResult] = useState<LookupResponse | null>(null);
+  const [sentence, setSentence] = useState<SentenceResponse | null>(null);
+  const [mode, setMode] = useState<"word" | "sentence">("word");
+  const [fromSentence, setFromSentence] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [alternatives, setAlternatives] = useState<Alternative[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -119,7 +147,10 @@ export function TranslateApp() {
   }, []);
 
   const show = useCallback(
-    async (word: string, opts: { conceptId?: string; pickedFrom?: { primary: Alternative; alts: Alternative[] }; pairOverride?: Pair } = {}) => {
+    async (
+      word: string,
+      opts: { conceptId?: string; pickedFrom?: { primary: Alternative; alts: Alternative[] }; pairOverride?: Pair; fromSentence?: boolean } = {},
+    ) => {
       const p = opts.pairOverride ?? pair;
       const clean = word.trim();
       if (!clean) {
@@ -131,6 +162,22 @@ export function TranslateApp() {
       setView("output");
       setStatus("loading");
       setError(null);
+      setFromSentence(!!opts.fromSentence);
+
+      if (!opts.conceptId && !opts.fromSentence && isSentence(clean, getLanguage(p.from)?.ime)) {
+        const sres = await fetchSentence(clean, p);
+        if (id !== requestId.current) return;
+        if (!sres.ok) {
+          setStatus("error");
+          setError(sres.error);
+          return;
+        }
+        setSentence(sres.data);
+        setMode("sentence");
+        setStatus("done");
+        return;
+      }
+
       const res = await fetchLookup(clean, p, opts.conceptId);
       if (id !== requestId.current) return; // a newer request won
       if (!res.ok) {
@@ -140,6 +187,7 @@ export function TranslateApp() {
       }
       const data = res.data;
       setResult(data);
+      setMode("word");
       setStatus("done");
       if (opts.pickedFrom) {
         setAlternatives([opts.pickedFrom.primary, ...opts.pickedFrom.alts].filter((a) => a.concept_id !== data.concept_id));
@@ -184,6 +232,8 @@ export function TranslateApp() {
     });
   };
 
+  const shown = mode === "sentence" ? sentence : result;
+  const sentenceMode = isSentence(text, fromLang.ime);
   const currentRating = result
     ? history.find((x) => x.key === `${result.source.lang}:${result.target_lang}:${result.concept_id}`)?.rating ?? null
     : null;
@@ -234,23 +284,26 @@ export function TranslateApp() {
               }}
               className="relative mt-4 rounded-xl bg-blue p-[18px] text-white shadow-card"
             >
-              <label htmlFor="wordInput" className="text-sm opacity-85">
-                Type a word in {fromLang.name}
+              <label htmlFor="wordInput" className="flex items-center justify-between gap-2 text-sm">
+                <span className="opacity-85">Type a word or sentence in {fromLang.name}</span>
+                {sentenceMode && (
+                  <span className="shrink-0 whitespace-nowrap rounded-full bg-white/20 px-2 py-0.5 text-xs font-semibold">Sentence</span>
+                )}
               </label>
               <input
                 ref={inputRef}
                 id="wordInput"
                 type="text"
                 value={text}
-                onChange={(e) => setText(e.target.value.slice(0, 40))}
+                onChange={(e) => setText(e.target.value.slice(0, 120))}
                 placeholder={fromLang.tryWords[0]?.word ?? "water"}
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck={false}
                 enterKeyHint="go"
-                maxLength={40}
+                maxLength={120}
                 lang={fromLang.code === "eng" ? "en" : undefined}
-                className="mt-1.5 w-full bg-transparent text-[30px] font-bold text-white caret-white outline-none placeholder:text-white/50"
+                className={`mt-1.5 w-full bg-transparent font-bold text-white caret-white outline-none transition-[font-size] placeholder:text-white/50 ${sentenceMode ? "text-xl" : "text-[30px]"}`}
               />
               {/* Mic button (speech input) is hidden until milestone M6. */}
               {!fromLang.ime && (
@@ -345,15 +398,15 @@ export function TranslateApp() {
             <button type="button" onClick={() => setView("input")} className="grid h-9 w-9 place-items-center rounded-full lg:invisible" aria-label="Back">
               <Back />
             </button>
-            <h2 className="text-center text-xl font-semibold">Your word</h2>
+            <h2 className="text-center text-xl font-semibold">{mode === "sentence" && status === "done" ? "Your sentence" : "Your word"}</h2>
             <AboutBubble />
           </header>
 
           <div className="no-scrollbar mx-2.5 flex-1 rounded-t-xl bg-canvas px-4 pb-7 pt-[18px] lg:rounded-b-xl">
             <div className="mb-3.5 flex items-center justify-center gap-2 text-sm text-ink-2">
-              <b className="font-semibold text-ink">{languageName(result && status === "done" ? result.source.lang : pair.from)}</b>
+              <b className="font-semibold text-ink">{languageName(shown && status === "done" ? shown.source.lang : pair.from)}</b>
               <Arrow size={14} />
-              <b className="font-semibold text-ink">{languageName(result && status === "done" ? result.target_lang : pair.to)}</b>
+              <b className="font-semibold text-ink">{languageName(shown && status === "done" ? shown.target_lang : pair.to)}</b>
             </div>
 
             <AnimatePresence mode="wait">
@@ -372,8 +425,20 @@ export function TranslateApp() {
                     </button>
                   </div>
                 </motion.div>
+              ) : mode === "sentence" && sentence ? (
+                <motion.div key={`sentence-${sentence.source.text}-${sentence.target_lang}`}>
+                  <SentenceCard
+                    data={sentence}
+                    onWord={(w) => void show(w, { fromSentence: true, pairOverride: { from: sentence.source.lang, to: sentence.target_lang } })}
+                  />
+                </motion.div>
               ) : result ? (
                 <motion.div key={`card-${result.concept_id}-${result.target_lang}`}>
+                  {fromSentence && sentence && (
+                    <button type="button" onClick={() => setMode("sentence")} className="mx-1 text-sm font-semibold text-blue">
+                      ← Back to the sentence
+                    </button>
+                  )}
                   <WordCard data={result} slow={slow} autoPlayKey={autoPlayKey} />
 
                   <div className="mx-1 mt-4 flex flex-wrap items-center gap-2">

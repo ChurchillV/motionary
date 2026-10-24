@@ -4,10 +4,11 @@ import { getLanguage, type Language } from "./languages";
 import {
   renderPrompt,
   resolvePrompt,
+  sentencePrompt,
   screenPrompt,
   type LexiconMatch,
 } from "./prompts";
-import { RenderResult, ResolveResult, ScreenResult } from "./schemas";
+import { RenderResult, ResolveResult, ScreenResult, SentenceResult } from "./schemas";
 import { generateValidated, PATIENT, retryTransient, type ModelCaller } from "./validated";
 import gestures from "@/data/gestures.json";
 
@@ -79,6 +80,12 @@ export const translate = {
       item_concept_id: value.item_concept_id?.toUpperCase() || null,
       alternatives: value.alternatives.filter((a) => a.concept_id !== value.concept_id),
     };
+  },
+
+  /** Sentence mode: one direct translation call. */
+  async sentence(args: { text: string; from: Language; to: Language }): Promise<SentenceResult> {
+    const { value } = await generateValidated(callModel, sentencePrompt(args), SentenceResult, gemmaModels());
+    return value;
   },
 
   /** 8b: concept → target language. */

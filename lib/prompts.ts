@@ -104,3 +104,24 @@ Judge it and reply with JSON only:
 - has_text: any captions, words or letters visible?
 - real_celebrity: does it show a recognisable real celebrity or public figure?`;
 }
+
+export function sentencePrompt(input: { text: string; from: Language; to: Language }): string {
+  const { text, from, to } = input;
+  const romanRule = to.romanization
+    ? `romanization: the whole translation written in ${to.romanization}.`
+    : "romanization: null.";
+  return `Translate this ${from.name} sentence into natural, simple ${to.name} for a beginner learner.
+
+Sentence: "${text}"
+
+Rules:
+1. Reply with JSON only. No prose, no code fences.
+2. translation: the ${to.name} sentence${to.script === "Latn" ? "" : " in native script"}. Keep the meaning, tense and tone.
+3. ${romanRule}
+4. english: what the sentence means in English${from.code === "eng" ? " (repeat the input, corrected if needed)" : ""}.
+5. key_words: 2 to 5 of the most useful content words (nouns, verbs, adjectives; skip articles and particles). For each: "source" is the word as it appears in the ${from.name} sentence, in dictionary form; "target" is the ${to.name} dictionary form${to.script === "Latn" ? "" : ` written in ${to.name} script, never romanized`}; "english" is a one or two word meaning.
+6. confidence: "high", "medium" or "low".
+
+JSON shape:
+{"translation": "...", "romanization": ${to.romanization ? '"..."' : "null"}, "english": "...", "key_words": [{"source": "...", "target": "...", "english": "..."}], "confidence": "high"}`;
+}

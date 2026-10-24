@@ -76,7 +76,7 @@ async function resolveSource(text: string, src: Language): Promise<ResolveResult
   const norm = normalizeForMatch(text);
 
   const cached = await repo.getInputCache(src.code, norm);
-  if (cached) {
+  if (cached?.concept_id) {
     const concept = await repo.getConcept(cached.concept_id);
     if (concept) {
       const meta = (cached.candidates ?? {}) as Partial<CachedResolve>;
