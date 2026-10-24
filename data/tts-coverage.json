@@ -1,0 +1,15 @@
+{
+  "description": "TTS provider per language (ISO 639-3). 'gemini' = on the Gemini TTS supported list; 'none' = hide audio. Re-check against the TTS model page before adding languages.",
+  "model": "gemini-3.8-flash-tts",
+  "providers": {
+    "eng": "gemini",
+    "spa": "gemini",
+    "fra": "gemini",
+    "deu": "gemini",
+    "ita": "gemini",
+    "por": "gemini",
+    "jpn": "gemini",
+    "kor": "gemini",
+    "cmn": "gemini"
+  }
+}

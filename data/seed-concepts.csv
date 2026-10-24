@@ -1,0 +1,295 @@
+concept_id,english_gloss,kind,emoji,aliases
+WAVE,wave (greet with a raised hand),gesture,👋,waving|wave hello
+CLAP,clap (hit hands together),gesture,👏,clapping|applaud
+NOD,nod (move head up and down),gesture,🙂‍↕️,nodding
+SHAKE_HEAD,shake head (say no),gesture,🙂‍↔️,head shake
+POINT,point (with a finger),gesture,👉,pointing
+THUMBS_UP,thumbs up,gesture,👍,good job|okay
+HUG,hug,gesture,🤗,hugging|embrace
+KISS,kiss,gesture,😘,kissing
+LAUGH,laugh,gesture,😂,laughing
+CRY,cry,gesture,😢,crying|weep
+SMILE,smile,gesture,😊,smiling
+SLEEP,sleep,gesture,😴,sleeping|nap
+EAT,eat,gesture,😋,eating
+DRINK,drink,gesture,🥤,drinking|sip
+RUN,run (move fast on foot),gesture,🏃,running|jog
+WALK,walk,gesture,🚶,walking
+JUMP,jump,gesture,🦘,jumping|hop
+DANCE,dance,gesture,💃,dancing
+SING,sing,gesture,🎤,singing
+SWIM,swim,gesture,🏊,swimming
+WRITE,write,gesture,✍️,writing
+READ,read,gesture,📖,reading
+THINK,think,gesture,🤔,thinking
+SHRUG,shrug (I don't know),gesture,🤷,shrugging
+LISTEN,listen,gesture,👂,listening|hear
+LOOK,look (watch with your eyes),gesture,👀,looking|see|watch
+CALL,call (on the phone),gesture,🤙,phone call|calling
+COOK,cook,gesture,🧑‍🍳,cooking
+CLEAN,clean,gesture,🧹,cleaning|sweep
+OPEN,open,gesture,📂,opening
+CLOSE,close (shut),gesture,🚪,closing|shut
+THROW,throw,gesture,🤾,throwing|toss
+SIT,sit,gesture,🪑,sitting|sit down
+STAND,stand,gesture,🧍,standing|stand up
+FALL,fall (fall down),gesture,🤸,falling|trip
+CLIMB,climb,gesture,🧗,climbing
+DRIVE,drive (a car),gesture,🚗,driving
+WASH,wash,gesture,🧼,washing
+BRUSH_TEETH,brush teeth,gesture,🪥,toothbrushing
+PLAY,play,gesture,🎮,playing
+LOVE,love,gesture,🥰,in love|adore
+ANGRY,angry,gesture,😠,mad|furious
+SCARED,scared,gesture,😱,afraid|frightened|fear
+YAWN,yawn (be tired),gesture,🥱,yawning|tired|sleepy
+PRAY,pray,gesture,🙏,praying
+HIGH_FIVE,high five,gesture,🙌,
+STOP,stop,gesture,✋,halt
+GIVE,give,gesture,🎁,giving
+BUY,buy,gesture,🛍️,shopping|purchase
+SNEEZE,sneeze,gesture,🤧,sneezing
+WINK,wink,gesture,😉,winking
+BOW,bow (bend forward politely),gesture,🙇,bowing
+CUT,cut,gesture,✂️,cutting
+PAINT,paint,gesture,🎨,painting|draw
+WORK,work,gesture,💼,working|job
+CELEBRATE,celebrate,gesture,🥳,party|celebration
+HELLO,hello (greeting),other,👋,hi|hey
+GOODBYE,goodbye,other,👋,bye|see you
+THANK_YOU,thank you,other,🙏,thanks
+YES,yes,other,✅,yeah|yep
+NO,no,other,❌,nope
+PLEASE,please,other,🥺,
+SORRY,sorry,other,😔,apologize|excuse me
+APPLE,apple,item,🍎,apples
+BANANA,banana,item,🍌,bananas
+ORANGE,orange (fruit),item,🍊,oranges|tangerine
+GRAPES,grapes,item,🍇,grape
+STRAWBERRY,strawberry,item,🍓,strawberries
+WATERMELON,watermelon,item,🍉,
+LEMON,lemon,item,🍋,lemons
+PEACH,peach,item,🍑,peaches
+PEAR,pear,item,🍐,pears
+CHERRY,cherry,item,🍒,cherries
+PINEAPPLE,pineapple,item,🍍,
+MANGO,mango,item,🥭,mangoes
+COCONUT,coconut,item,🥥,
+AVOCADO,avocado,item,🥑,
+TOMATO,tomato,item,🍅,tomatoes
+CARROT,carrot,item,🥕,carrots
+CORN,corn,item,🌽,maize
+POTATO,potato,item,🥔,potatoes
+ONION,onion,item,🧅,onions
+GARLIC,garlic,item,🧄,
+BROCCOLI,broccoli,item,🥦,
+MUSHROOM,mushroom,item,🍄,mushrooms
+PEPPER,pepper (chili),item,🌶️,chili|hot pepper
+CUCUMBER,cucumber,item,🥒,
+BREAD,bread,item,🍞,loaf
+CHEESE,cheese,item,🧀,
+EGG,egg,item,🥚,eggs
+MILK,milk,item,🥛,
+WATER,water,item,💧,
+COFFEE,coffee,item,☕,
+TEA,tea,item,🍵,green tea
+JUICE,juice,item,🧃,
+WINE,wine,item,🍷,
+BEER,beer,item,🍺,
+RICE,rice,item,🍚,
+NOODLES,noodles,item,🍜,ramen
+PIZZA,pizza,item,🍕,
+HAMBURGER,hamburger,item,🍔,burger
+FRIES,french fries,item,🍟,fries|chips
+SANDWICH,sandwich,item,🥪,
+SOUP,soup,item,🥣,
+SALAD,salad,item,🥗,
+CAKE,cake,item,🍰,
+COOKIE,cookie,item,🍪,biscuit
+CHOCOLATE,chocolate,item,🍫,
+ICE_CREAM,ice cream,item,🍦,
+CANDY,candy,item,🍬,sweets
+HONEY,honey,item,🍯,
+SALT,salt,item,🧂,
+MEAT,meat,item,🍖,
+CHICKEN_MEAT,chicken (food),item,🍗,
+FISH_FOOD,fish (food),item,🍣,sushi
+SUSHI,sushi,item,🍣,
+TACO,taco,item,🌮,
+POPCORN,popcorn,item,🍿,
+DOG,dog,item,🐕,dogs
+CAT,cat,item,🐈,cats|kitty
+MOUSE,mouse (animal),item,🐁,mice
+RABBIT,rabbit,item,🐇,bunny
+HORSE,horse,item,🐎,
+COW,cow,item,🐄,
+PIG,pig,item,🐖,
+SHEEP,sheep,item,🐑,lamb
+GOAT,goat,item,🐐,
+CHICKEN,chicken (animal),item,🐔,hen
+DUCK,duck,item,🦆,
+BIRD,bird,item,🐦,birds
+OWL,owl,item,🦉,
+EAGLE,eagle,item,🦅,
+PENGUIN,penguin,item,🐧,
+FISH,fish (animal),item,🐟,
+SHARK,shark,item,🦈,
+WHALE,whale,item,🐋,
+DOLPHIN,dolphin,item,🐬,
+OCTOPUS,octopus,item,🐙,
+CRAB,crab,item,🦀,
+TURTLE,turtle,item,🐢,tortoise
+FROG,frog,item,🐸,
+SNAKE,snake,item,🐍,
+LION,lion,item,🦁,
+TIGER,tiger,item,🐅,
+BEAR,bear,item,🐻,
+MONKEY,monkey,item,🐒,
+ELEPHANT,elephant,item,🐘,
+GIRAFFE,giraffe,item,🦒,
+ZEBRA,zebra,item,🦓,
+KANGAROO,kangaroo,item,🦘,
+PANDA,panda,item,🐼,
+FOX,fox,item,🦊,
+WOLF,wolf,item,🐺,
+DEER,deer,item,🦌,
+BAT_ANIMAL,bat (flying animal),item,🦇,
+BUTTERFLY,butterfly,item,🦋,
+BEE,bee,item,🐝,
+ANT,ant,item,🐜,
+SPIDER,spider,item,🕷️,
+SNAIL,snail,item,🐌,
+DINOSAUR,dinosaur,item,🦖,
+UNICORN,unicorn,item,🦄,
+SUN,sun,item,☀️,sunshine
+MOON,moon,item,🌙,
+STAR,star,item,⭐,stars
+CLOUD,cloud,item,☁️,clouds
+RAIN,rain,item,🌧️,raining
+SNOW,snow,item,❄️,snowing
+WIND,wind,item,💨,windy
+RAINBOW,rainbow,item,🌈,
+LIGHTNING,lightning,item,⚡,thunder
+FIRE,fire,item,🔥,flame
+WAVE_WATER,wave (of the sea),item,🌊,ocean wave
+SEA,sea,item,🌊,ocean
+RIVER,river,item,🏞️,
+MOUNTAIN,mountain,item,⛰️,mountains
+VOLCANO,volcano,item,🌋,
+TREE,tree,item,🌳,trees
+FLOWER,flower,item,🌸,flowers|blossom
+ROSE,rose,item,🌹,
+LEAF,leaf,item,🍃,leaves
+CACTUS,cactus,item,🌵,
+EARTH,earth (the planet),item,🌍,world|planet
+BEACH,beach,item,🏖️,
+DESERT,desert,item,🏜️,
+ISLAND,island,item,🏝️,
+HOUSE,house,item,🏠,home
+SCHOOL,school,item,🏫,
+HOSPITAL,hospital,item,🏥,
+CHURCH,church,item,⛪,
+CASTLE,castle,item,🏰,
+CITY,city,item,🏙️,town
+STORE,store (shop),item,🏪,shop
+BANK,bank,item,🏦,
+OFFICE,office,item,🏢,
+DOOR,door,item,🚪,
+WINDOW,window,item,🪟,
+BED,bed,item,🛏️,
+CHAIR,chair,item,🪑,seat
+TABLE,table,item,🍽️,
+COUCH,couch,item,🛋️,sofa
+TOILET,toilet,item,🚽,bathroom
+BATHTUB,bathtub,item,🛁,bath
+KEY,key,item,🔑,keys
+LAMP,lamp (light),item,💡,light|light bulb
+CLOCK,clock,item,⏰,alarm clock
+BOOK,book,item,📚,books
+PEN,pen,item,🖊️,
+PENCIL,pencil,item,✏️,
+PAPER,paper,item,📄,
+SCISSORS,scissors,item,✂️,
+PHONE,phone,item,📱,mobile|cellphone|smartphone
+COMPUTER,computer,item,💻,laptop
+TELEVISION,television,item,📺,tv
+CAMERA,camera,item,📷,
+MUSIC,music,item,🎵,song
+GUITAR,guitar,item,🎸,
+PIANO,piano,item,🎹,
+DRUM,drum,item,🥁,drums
+BALL,ball,item,⚽,soccer ball|football
+GIFT,gift,item,🎁,present
+BALLOON,balloon,item,🎈,balloons
+UMBRELLA,umbrella,item,☂️,
+BAG,bag,item,👜,handbag|purse
+BACKPACK,backpack,item,🎒,
+MONEY,money,item,💰,cash
+CAR,car,item,🚗,auto
+BUS,bus,item,🚌,
+TRAIN,train,item,🚆,
+BICYCLE,bicycle,item,🚲,bike
+AIRPLANE,airplane,item,✈️,plane
+BOAT,boat,item,⛵,ship|sailboat
+ROCKET,rocket,item,🚀,
+TRUCK,truck,item,🚚,
+MOTORCYCLE,motorcycle,item,🏍️,
+HELICOPTER,helicopter,item,🚁,
+SHIRT,shirt,item,👕,t-shirt
+PANTS,pants,item,👖,trousers|jeans
+DRESS,dress,item,👗,
+SHOES,shoes,item,👟,shoe|sneakers
+HAT,hat,item,🎩,cap
+GLASSES,glasses,item,👓,spectacles
+SOCKS,socks,item,🧦,
+COAT,coat,item,🧥,jacket
+SCARF,scarf,item,🧣,
+RING,ring (jewelry),item,💍,
+CROWN,crown,item,👑,
+HAND,hand,item,✋,hands
+EYE,eye,item,👁️,eyes
+EAR,ear,item,👂,ears
+NOSE,nose,item,👃,
+MOUTH,mouth,item,👄,lips
+TOOTH,tooth,item,🦷,teeth
+HEART,heart,item,❤️,
+BRAIN,brain,item,🧠,
+FOOT,foot,item,🦶,feet
+LEG,leg,item,🦵,legs
+ARM,arm (muscle),item,💪,arms|muscle
+BABY,baby,item,👶,infant
+BOY,boy,item,👦,
+GIRL,girl,item,👧,
+MAN,man,item,👨,
+WOMAN,woman,item,👩,
+FAMILY,family,item,👪,
+FRIEND,friend,item,🧑‍🤝‍🧑,friends
+DOCTOR,doctor,item,🧑‍⚕️,
+TEACHER,teacher,item,🧑‍🏫,
+POLICE,police officer,item,👮,police
+GHOST,ghost,item,👻,
+ROBOT,robot,item,🤖,
+ALIEN,alien,item,👽,
+HAMMER,hammer,item,🔨,
+BOMB,bomb,item,💣,
+CANDLE,candle,item,🕯️,
+MAGNET,magnet,item,🧲,
+TROPHY,trophy,item,🏆,
+MEDAL,medal,item,🏅,
+BAT_SPORTS,bat (for hitting a ball),item,🏏,baseball bat|cricket bat
+TENT,tent,item,⛺,camping
+MAP,map,item,🗺️,
+FLAG,flag,item,🏳️,
+TICKET,ticket,item,🎟️,
+SOAP,soap,item,🧼,
+TOOTHBRUSH,toothbrush,item,🪥,
+BROOM,broom,item,🧹,
+BUCKET,bucket,item,🪣,
+BASKET,basket,item,🧺,
+PLATE,plate,item,🍽️,dish
+SPOON,spoon,item,🥄,
+FORK,fork,item,🍴,
+KNIFE,knife,item,🔪,
+CUP,cup,item,☕,mug
+BOTTLE,bottle,item,🍼,
+STAMP,stamp,item,📮,mailbox|letter

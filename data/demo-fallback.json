@@ -1,0 +1,899 @@
+{
+  "description": "Snapshot used when an API is down or GEMINI_API_KEY is missing. Keys: '<lang>:<normalised text>' and '<CONCEPT>:<lang>'. Refresh from the live API with `npm run smoke -- --snapshot`.",
+  "resolves": {
+    "eng:wave": {
+      "concept_id": "WAVE",
+      "english_gloss": "wave (greet with a raised hand)",
+      "kind": "gesture",
+      "gesture_id": "WAVE",
+      "item_concept_id": null,
+      "emoji": "👋",
+      "gif_search_terms": [
+        "waving hello"
+      ],
+      "matched_form": null,
+      "alternatives": [
+        {
+          "concept_id": "WAVE_WATER",
+          "english_gloss": "wave (of the sea)"
+        }
+      ],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:apple": {
+      "concept_id": "APPLE",
+      "english_gloss": "apple",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🍎",
+      "gif_search_terms": [
+        "apple"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:eat apple": {
+      "concept_id": "EAT_APPLE",
+      "english_gloss": "eat an apple",
+      "kind": "gesture",
+      "gesture_id": "EAT",
+      "item_concept_id": "APPLE",
+      "emoji": "🍎",
+      "gif_search_terms": [
+        "eating apple"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:puppy": {
+      "concept_id": "PUPPY",
+      "english_gloss": "puppy (young dog)",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🐶",
+      "gif_search_terms": [
+        "puppy"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:kite": {
+      "concept_id": "KITE",
+      "english_gloss": "kite (flying toy)",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🪁",
+      "gif_search_terms": [
+        "kite flying"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:water": {
+      "concept_id": "WATER",
+      "english_gloss": "water",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "💧",
+      "gif_search_terms": [
+        "water drop"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:bat": {
+      "concept_id": "BAT_ANIMAL",
+      "english_gloss": "bat (flying animal)",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🦇",
+      "gif_search_terms": [
+        "bat flying"
+      ],
+      "matched_form": null,
+      "alternatives": [
+        {
+          "concept_id": "BAT_SPORTS",
+          "english_gloss": "bat (for hitting a ball)"
+        }
+      ],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:dog": {
+      "concept_id": "DOG",
+      "english_gloss": "dog",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🐕",
+      "gif_search_terms": [
+        "dog"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:eat": {
+      "concept_id": "EAT",
+      "english_gloss": "eat",
+      "kind": "gesture",
+      "gesture_id": "EAT",
+      "item_concept_id": null,
+      "emoji": "😋",
+      "gif_search_terms": [
+        "eating"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:house": {
+      "concept_id": "HOUSE",
+      "english_gloss": "house",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🏠",
+      "gif_search_terms": [
+        "house"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:sun": {
+      "concept_id": "SUN",
+      "english_gloss": "sun",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "☀️",
+      "gif_search_terms": [
+        "sun"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "eng:hello": {
+      "concept_id": "HELLO",
+      "english_gloss": "hello (greeting)",
+      "kind": "other",
+      "gesture_id": "WAVE",
+      "item_concept_id": null,
+      "emoji": "👋",
+      "gif_search_terms": [
+        "waving hello"
+      ],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:agua": {
+      "concept_id": "WATER",
+      "english_gloss": "water",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "💧",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:manzana": {
+      "concept_id": "APPLE",
+      "english_gloss": "apple",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🍎",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:perro": {
+      "concept_id": "DOG",
+      "english_gloss": "dog",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🐕",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:comer": {
+      "concept_id": "EAT",
+      "english_gloss": "eat",
+      "kind": "gesture",
+      "gesture_id": "EAT",
+      "item_concept_id": null,
+      "emoji": "😋",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:casa": {
+      "concept_id": "HOUSE",
+      "english_gloss": "house",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🏠",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:saludar": {
+      "concept_id": "WAVE",
+      "english_gloss": "wave (greet with a raised hand)",
+      "kind": "gesture",
+      "gesture_id": "WAVE",
+      "item_concept_id": null,
+      "emoji": "👋",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "spa:hola": {
+      "concept_id": "HELLO",
+      "english_gloss": "hello (greeting)",
+      "kind": "other",
+      "gesture_id": "WAVE",
+      "item_concept_id": null,
+      "emoji": "👋",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "jpn:水": {
+      "concept_id": "WATER",
+      "english_gloss": "water",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "💧",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "jpn:りんご": {
+      "concept_id": "APPLE",
+      "english_gloss": "apple",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🍎",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "jpn:犬": {
+      "concept_id": "DOG",
+      "english_gloss": "dog",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🐕",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "jpn:食べる": {
+      "concept_id": "EAT",
+      "english_gloss": "eat",
+      "kind": "gesture",
+      "gesture_id": "EAT",
+      "item_concept_id": null,
+      "emoji": "😋",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    },
+    "jpn:家": {
+      "concept_id": "HOUSE",
+      "english_gloss": "house",
+      "kind": "item",
+      "gesture_id": null,
+      "item_concept_id": null,
+      "emoji": "🏠",
+      "gif_search_terms": [],
+      "matched_form": null,
+      "alternatives": [],
+      "source": "model",
+      "confidence": "high"
+    }
+  },
+  "renders": {
+    "WAVE:spa": {
+      "target": {
+        "form": "saludar",
+        "romanization": null,
+        "ipa": "sa.luˈðaɾ"
+      },
+      "example_sentence": {
+        "target": "Voy a saludar a mi amiga.",
+        "english": "I am going to wave to my friend."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WAVE:jpn": {
+      "target": {
+        "form": "手を振る",
+        "romanization": "te o furu",
+        "ipa": "te o ɸɯɾɯ"
+      },
+      "example_sentence": {
+        "target": "友だちに手を振る。",
+        "english": "I wave to my friend."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WAVE:eng": {
+      "target": {
+        "form": "wave",
+        "romanization": null,
+        "ipa": "weɪv"
+      },
+      "example_sentence": {
+        "target": "She waves hello.",
+        "english": "She waves hello."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WAVE_WATER:spa": {
+      "target": {
+        "form": "ola",
+        "romanization": null,
+        "ipa": "ˈo.la"
+      },
+      "example_sentence": {
+        "target": "La ola es grande.",
+        "english": "The wave is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WAVE_WATER:jpn": {
+      "target": {
+        "form": "波",
+        "romanization": "nami",
+        "ipa": "nami"
+      },
+      "example_sentence": {
+        "target": "波が大きい。",
+        "english": "The wave is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WAVE_WATER:eng": {
+      "target": {
+        "form": "wave",
+        "romanization": null,
+        "ipa": "weɪv"
+      },
+      "example_sentence": {
+        "target": "The wave is big.",
+        "english": "The wave is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "APPLE:spa": {
+      "target": {
+        "form": "manzana",
+        "romanization": null,
+        "ipa": "manˈsa.na"
+      },
+      "example_sentence": {
+        "target": "Como una manzana roja.",
+        "english": "I eat a red apple."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "APPLE:jpn": {
+      "target": {
+        "form": "りんご",
+        "romanization": "ringo",
+        "ipa": "ɾiŋɡo"
+      },
+      "example_sentence": {
+        "target": "りんごは赤い。",
+        "english": "The apple is red."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "APPLE:eng": {
+      "target": {
+        "form": "apple",
+        "romanization": null,
+        "ipa": "ˈæp.əl"
+      },
+      "example_sentence": {
+        "target": "The apple is red.",
+        "english": "The apple is red."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT_APPLE:spa": {
+      "target": {
+        "form": "comer una manzana",
+        "romanization": null,
+        "ipa": "koˈmeɾ ˈu.na manˈsa.na"
+      },
+      "example_sentence": {
+        "target": "Me gusta comer una manzana.",
+        "english": "I like to eat an apple."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT_APPLE:jpn": {
+      "target": {
+        "form": "りんごを食べる",
+        "romanization": "ringo o taberu",
+        "ipa": "ɾiŋɡo o tabeɾɯ"
+      },
+      "example_sentence": {
+        "target": "毎朝りんごを食べる。",
+        "english": "I eat an apple every morning."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT_APPLE:eng": {
+      "target": {
+        "form": "eat an apple",
+        "romanization": null,
+        "ipa": "iːt ən ˈæp.əl"
+      },
+      "example_sentence": {
+        "target": "I eat an apple every day.",
+        "english": "I eat an apple every day."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "PUPPY:spa": {
+      "target": {
+        "form": "cachorro",
+        "romanization": null,
+        "ipa": "kaˈt͡ʃo.ro"
+      },
+      "example_sentence": {
+        "target": "El cachorro juega.",
+        "english": "The puppy plays."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "PUPPY:jpn": {
+      "target": {
+        "form": "子犬",
+        "romanization": "koinu",
+        "ipa": "koinɯ"
+      },
+      "example_sentence": {
+        "target": "子犬がかわいい。",
+        "english": "The puppy is cute."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "PUPPY:eng": {
+      "target": {
+        "form": "puppy",
+        "romanization": null,
+        "ipa": "ˈpʌp.i"
+      },
+      "example_sentence": {
+        "target": "The puppy plays.",
+        "english": "The puppy plays."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "KITE:spa": {
+      "target": {
+        "form": "cometa",
+        "romanization": null,
+        "ipa": "koˈme.ta"
+      },
+      "example_sentence": {
+        "target": "La cometa vuela alto.",
+        "english": "The kite flies high."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "KITE:jpn": {
+      "target": {
+        "form": "凧",
+        "romanization": "tako",
+        "ipa": "tako"
+      },
+      "example_sentence": {
+        "target": "凧が空を飛ぶ。",
+        "english": "The kite flies in the sky."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "KITE:eng": {
+      "target": {
+        "form": "kite",
+        "romanization": null,
+        "ipa": "kaɪt"
+      },
+      "example_sentence": {
+        "target": "The kite flies high.",
+        "english": "The kite flies high."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WATER:spa": {
+      "target": {
+        "form": "agua",
+        "romanization": null,
+        "ipa": "ˈa.ɣwa"
+      },
+      "example_sentence": {
+        "target": "Bebo agua fría.",
+        "english": "I drink cold water."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WATER:jpn": {
+      "target": {
+        "form": "水",
+        "romanization": "mizu",
+        "ipa": "mizɯ"
+      },
+      "example_sentence": {
+        "target": "水を飲む。",
+        "english": "I drink water."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "WATER:eng": {
+      "target": {
+        "form": "water",
+        "romanization": null,
+        "ipa": "ˈwɔː.tər"
+      },
+      "example_sentence": {
+        "target": "I drink cold water.",
+        "english": "I drink cold water."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_ANIMAL:spa": {
+      "target": {
+        "form": "murciélago",
+        "romanization": null,
+        "ipa": "muɾˈsje.la.ɣo"
+      },
+      "example_sentence": {
+        "target": "El murciélago vuela de noche.",
+        "english": "The bat flies at night."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_ANIMAL:jpn": {
+      "target": {
+        "form": "コウモリ",
+        "romanization": "kōmori",
+        "ipa": "koːmoɾi"
+      },
+      "example_sentence": {
+        "target": "コウモリは夜に飛ぶ。",
+        "english": "Bats fly at night."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_ANIMAL:eng": {
+      "target": {
+        "form": "bat",
+        "romanization": null,
+        "ipa": "bæt"
+      },
+      "example_sentence": {
+        "target": "The bat flies at night.",
+        "english": "The bat flies at night."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_SPORTS:spa": {
+      "target": {
+        "form": "bate",
+        "romanization": null,
+        "ipa": "ˈba.te"
+      },
+      "example_sentence": {
+        "target": "Tengo un bate nuevo.",
+        "english": "I have a new bat."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_SPORTS:jpn": {
+      "target": {
+        "form": "バット",
+        "romanization": "batto",
+        "ipa": "batto"
+      },
+      "example_sentence": {
+        "target": "バットでボールを打つ。",
+        "english": "I hit the ball with a bat."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "BAT_SPORTS:eng": {
+      "target": {
+        "form": "bat",
+        "romanization": null,
+        "ipa": "bæt"
+      },
+      "example_sentence": {
+        "target": "I hit the ball with a bat.",
+        "english": "I hit the ball with a bat."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "DOG:spa": {
+      "target": {
+        "form": "perro",
+        "romanization": null,
+        "ipa": "ˈpe.ro"
+      },
+      "example_sentence": {
+        "target": "El perro duerme.",
+        "english": "The dog sleeps."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "DOG:jpn": {
+      "target": {
+        "form": "犬",
+        "romanization": "inu",
+        "ipa": "inɯ"
+      },
+      "example_sentence": {
+        "target": "犬が走る。",
+        "english": "The dog runs."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "DOG:eng": {
+      "target": {
+        "form": "dog",
+        "romanization": null,
+        "ipa": "dɒɡ"
+      },
+      "example_sentence": {
+        "target": "The dog sleeps.",
+        "english": "The dog sleeps."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT:spa": {
+      "target": {
+        "form": "comer",
+        "romanization": null,
+        "ipa": "koˈmeɾ"
+      },
+      "example_sentence": {
+        "target": "Me gusta comer pan.",
+        "english": "I like to eat bread."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT:jpn": {
+      "target": {
+        "form": "食べる",
+        "romanization": "taberu",
+        "ipa": "tabeɾɯ"
+      },
+      "example_sentence": {
+        "target": "パンを食べる。",
+        "english": "I eat bread."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "EAT:eng": {
+      "target": {
+        "form": "eat",
+        "romanization": null,
+        "ipa": "iːt"
+      },
+      "example_sentence": {
+        "target": "I like to eat bread.",
+        "english": "I like to eat bread."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HOUSE:spa": {
+      "target": {
+        "form": "casa",
+        "romanization": null,
+        "ipa": "ˈka.sa"
+      },
+      "example_sentence": {
+        "target": "Mi casa es grande.",
+        "english": "My house is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HOUSE:jpn": {
+      "target": {
+        "form": "家",
+        "romanization": "ie",
+        "ipa": "ie"
+      },
+      "example_sentence": {
+        "target": "私の家は大きい。",
+        "english": "My house is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HOUSE:eng": {
+      "target": {
+        "form": "house",
+        "romanization": null,
+        "ipa": "haʊs"
+      },
+      "example_sentence": {
+        "target": "My house is big.",
+        "english": "My house is big."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "SUN:spa": {
+      "target": {
+        "form": "sol",
+        "romanization": null,
+        "ipa": "sol"
+      },
+      "example_sentence": {
+        "target": "El sol brilla.",
+        "english": "The sun shines."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "SUN:jpn": {
+      "target": {
+        "form": "太陽",
+        "romanization": "taiyō",
+        "ipa": "taijoː"
+      },
+      "example_sentence": {
+        "target": "太陽が明るい。",
+        "english": "The sun is bright."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "SUN:eng": {
+      "target": {
+        "form": "sun",
+        "romanization": null,
+        "ipa": "sʌn"
+      },
+      "example_sentence": {
+        "target": "The sun shines.",
+        "english": "The sun shines."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HELLO:spa": {
+      "target": {
+        "form": "hola",
+        "romanization": null,
+        "ipa": "ˈo.la"
+      },
+      "example_sentence": {
+        "target": "¡Hola, amigo!",
+        "english": "Hello, friend!"
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HELLO:jpn": {
+      "target": {
+        "form": "こんにちは",
+        "romanization": "konnichiwa",
+        "ipa": "koɲɲit͡ɕiwa"
+      },
+      "example_sentence": {
+        "target": "先生、こんにちは。",
+        "english": "Hello, teacher."
+      },
+      "source": "model",
+      "confidence": "high"
+    },
+    "HELLO:eng": {
+      "target": {
+        "form": "hello",
+        "romanization": null,
+        "ipa": "həˈloʊ"
+      },
+      "example_sentence": {
+        "target": "Hello, friend!",
+        "english": "Hello, friend!"
+      },
+      "source": "model",
+      "confidence": "high"
+    }
+  }
+}
