@@ -5,7 +5,7 @@ import { repo } from "@/lib/db";
 import { callModel } from "@/lib/gemini";
 import { enrichPrompt } from "@/lib/prompts";
 import { EnrichResult } from "@/lib/schemas";
-import { generateValidated } from "@/lib/validated";
+import { generateValidated, PATIENT } from "@/lib/validated";
 import { eta, run } from "./_util";
 
 run("02-enrich-concepts", async () => {
@@ -19,7 +19,7 @@ run("02-enrich-concepts", async () => {
       const { value } = await generateValidated(callModel, enrichPrompt(batch), EnrichResult, {
         primary: config.visionModel,
         fallback: config.gemmaModel,
-      });
+      }, PATIENT);
       const byId = new Map(value.concepts.map((c) => [c.concept_id, c]));
       for (const c of batch) {
         const e = byId.get(c.concept_id);
