@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isClipFresh, storagePathFor } from "@/lib/audio";
+import { clipHash, isClipFresh, storagePathFor } from "@/lib/audio";
 import { pcmToWav } from "@/lib/gemini";
 import { ttsProviderFor } from "@/lib/languages";
 import { textHash } from "@/lib/text";
@@ -16,10 +16,14 @@ describe("TTS provider routing", () => {
 
 describe("text_hash cache invalidation", () => {
   it("reuses a clip only when the spoken text is identical", () => {
-    const row = { text_hash: textHash("Bebo agua fría.") };
+    const row = { text_hash: clipHash("Bebo agua fría.") };
     expect(isClipFresh(row, "Bebo agua fría.")).toBe(true);
     expect(isClipFresh(row, "Bebo agua.")).toBe(false);
     expect(isClipFresh(null, "Bebo agua.")).toBe(false);
+  });
+
+  it("regenerates clips made by an older TTS version", () => {
+    expect(isClipFresh({ text_hash: textHash("agua") }, "agua")).toBe(false);
   });
 
   it("stores clips under audio/<lang>/<concept>/<kind>-<hash>", () => {

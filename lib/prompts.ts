@@ -104,9 +104,3 @@ Judge it and reply with JSON only:
 - has_text: any captions, words or letters visible?
 - real_celebrity: does it show a recognisable real celebrity or public figure?`;
 }
-
-export function ttsPrompt(text: string, langName: string, kind: "word" | "sentence"): string {
-  return kind === "word"
-    ? `Say this ${langName} word clearly and warmly, at a slow pace for a language learner: ${text}`
-    : `Read this ${langName} sentence clearly and warmly, at a slightly slow pace for a language learner: ${text}`;
-}

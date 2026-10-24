@@ -5,11 +5,10 @@ import {
   renderPrompt,
   resolvePrompt,
   screenPrompt,
-  ttsPrompt,
   type LexiconMatch,
 } from "./prompts";
 import { RenderResult, ResolveResult, ScreenResult } from "./schemas";
-import { generateValidated, type ModelCaller } from "./validated";
+import { generateValidated, PATIENT, retryTransient, type ModelCaller } from "./validated";
 import gestures from "@/data/gestures.json";
 
 let client: GoogleGenAI | null = null;
@@ -102,7 +101,7 @@ function normalise(v: number[]): number[] {
 }
 
 export async function embed(text: string): Promise<number[]> {
-  return withTimeout(config.modelTimeoutMs, async (abortSignal) => {
+  return retryTransient(() => withTimeout(config.modelTimeoutMs, async (abortSignal) => {
     const res = await gemini().models.embedContent({
       model: config.embeddingModel,
       contents: text,
@@ -111,7 +110,7 @@ export async function embed(text: string): Promise<number[]> {
     const values = res.embeddings?.[0]?.values;
     if (!values?.length) throw new Error("Empty embedding");
     return normalise(values);
-  });
+  }), { retries: 1, budgetMs: 10_000 });
 }
 
 /** Vision screening of a candidate GIF (script 04). Sends the small MP4 rendition. */
@@ -138,7 +137,7 @@ export async function screenGif(mp4Url: string, gloss: string, kind: string): Pr
 
   const { value } = await generateValidated(caller, screenPrompt(gloss, kind), ScreenResult, {
     primary: config.visionModel,
-  });
+  }, PATIENT);
   return value;
 }
 
@@ -163,25 +162,39 @@ export function pcmToWav(pcm: Buffer, sampleRate = 24000, channels = 1, bitsPerS
 }
 
 /**
- * Gemini TTS. Newer models may return WAV with a header; older ones return raw
- * PCM (audio/L16;rate=24000). Both come back as a WAV buffer here.
+ * Gemini TTS. Only the text itself is sent: instructions in the prompt get read
+ * aloud. The language goes in speechConfig.languageCode instead.
+ * Newer models return WAV; older ones return raw PCM (audio/L16;rate=24000).
  */
 export async function synthesize(
   text: string,
   langCode: string,
-  kind: "word" | "sentence",
 ): Promise<{ audio: Buffer; mimeType: "audio/wav"; durationMs: number }> {
-  const langName = getLanguage(langCode)?.name ?? langCode;
-  return withTimeout(config.ttsTimeoutMs, async (abortSignal) => {
-    const res = await gemini().models.generateContent({
-      model: config.ttsModel,
-      contents: [{ role: "user", parts: [{ text: ttsPrompt(text, langName, kind) }] }],
-      config: {
-        responseModalities: ["AUDIO"],
-        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: config.ttsVoice } } },
-        abortSignal,
-      },
-    });
+  const languageCode = getLanguage(langCode)?.ttsCode;
+  const request = (withLanguage: boolean) =>
+    withTimeout(config.ttsTimeoutMs, (abortSignal) =>
+      gemini().models.generateContent({
+        model: config.ttsModel,
+        contents: [{ role: "user", parts: [{ text }] }],
+        config: {
+          responseModalities: ["AUDIO"],
+          speechConfig: {
+            ...(withLanguage && languageCode ? { languageCode } : {}),
+            voiceConfig: { prebuiltVoiceConfig: { voiceName: config.ttsVoice } },
+          },
+          abortSignal,
+        },
+      }),
+    );
+  return retryTransient(async () => {
+    let res;
+    try {
+      res = await request(true);
+    } catch (e) {
+      // An unsupported language code is a 400: try once more and let the model detect the language.
+      if (!/INVALID_ARGUMENT|"code":\s*400/.test((e as Error).message)) throw e;
+      res = await request(false);
+    }
     const inline = res.candidates?.[0]?.content?.parts?.find((p) => p.inlineData?.data)?.inlineData;
     if (!inline?.data) throw new Error("TTS returned no audio");
     const raw = Buffer.from(inline.data, "base64");
@@ -191,5 +204,5 @@ export async function synthesize(
     const byteRate = audio.readUInt32LE(28) || rate * 2;
     const durationMs = Math.round(((audio.length - 44) / byteRate) * 1000);
     return { audio, mimeType: "audio/wav", durationMs };
-  });
+  }, { retries: 2, budgetMs: 25_000 });
 }

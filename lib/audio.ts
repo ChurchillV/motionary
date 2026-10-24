@@ -12,6 +12,17 @@ import { glossHeadword, textHash } from "./text";
 
 export type AudioKind = "word" | "sentence";
 
+/**
+ * Bump when the way clips are generated changes, so old clips regenerate.
+ * v2: only the text is sent to TTS (v1 included spoken instructions).
+ */
+export const TTS_VERSION = "v2";
+
+/** Fingerprint of a clip: the exact text spoken plus the generation version. */
+export function clipHash(text: string): string {
+  return textHash(`${TTS_VERSION}\u0000${text}`);
+}
+
 const inFlight = new Map<string, Promise<AudioClip | null>>();
 
 function clip(storagePath: string): AudioClip {
@@ -24,7 +35,7 @@ export function storagePathFor(lang: string, conceptId: string, kind: AudioKind,
 
 /** A clip is reusable only when it was made from exactly this text. */
 export function isClipFresh(row: { text_hash: string } | null, text: string): boolean {
-  return !!row && row.text_hash === textHash(text);
+  return !!row && row.text_hash === clipHash(text);
 }
 
 /** Cached clip URL, or null. Never generates (used by /api/lookup so it never blocks). */
@@ -37,7 +48,7 @@ export async function getCachedAudio(conceptId: string, lang: string, kind: Audi
 /** Cached clip, or generate → store → return. Returns null on failure; never throws. */
 export async function getAudio(conceptId: string, lang: string, kind: AudioKind, text: string): Promise<AudioClip | null> {
   if (ttsProviderFor(lang) === "none" || !text.trim()) return null;
-  const key = `${conceptId}:${lang}:${kind}:${textHash(text)}`;
+  const key = `${conceptId}:${lang}:${kind}:${clipHash(text)}`;
   const pending = inFlight.get(key);
   if (pending) return pending;
 
@@ -46,8 +57,8 @@ export async function getAudio(conceptId: string, lang: string, kind: AudioKind,
       const cached = await getCachedAudio(conceptId, lang, kind, text);
       if (cached) return cached;
       if (!hasGemini()) return null;
-      const hash = textHash(text);
-      const { audio, mimeType, durationMs } = await synthesize(text, lang, kind);
+      const hash = clipHash(text);
+      const { audio, mimeType, durationMs } = await synthesize(text, lang);
       const storagePath = storagePathFor(lang, conceptId, kind, hash);
       await repo.uploadFile(storagePath, audio, mimeType);
       await repo.upsertAudioClip({
